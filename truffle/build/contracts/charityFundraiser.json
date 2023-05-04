@@ -1,0 +1,787 @@
+{
+  "contractName": "charityFundraiser",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "name": "charity_organization_address",
+          "type": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "donate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x602061028b6000396000518060a01c61028657604052346102865760405160005561025361003261000039610253610000f36003361161000c5761023b565b60003560e01c63ed88c68e81186100cf576004361061024157346100ab5760266040527f446f6e6174696f6e20616d6f756e74206d7573742062652067726561746572206060527f7468616e2030000000000000000000000000000000000000000000000000000060805260405060405180606001601f826000031636823750506308c379a06000526020602052601f19601f6040510116604401601cfd5b60013360205260005260406000208054348082018281106102415790509050815550005b3461024157633ccfd60b81186102395760043610610241576000543318156101965760426040527f4f6e6c79207468652064657369676e617465642063686172697461626c65206f6060527f7267616e697a6174696f6e2063616e20776974686472617720646f6e6174696f6080527f6e7300000000000000000000000000000000000000000000000000000000000060a05260405060405180606001601f826000031636823750506308c379a06000526020602052601f19601f6040510116604401601cfd5b4760405260006000600060006040516000546000f11561024157471561023757602b6060527f436f6e74726163742062616c616e6365206d75737420626520302061667465726080527f207769746864726177616c00000000000000000000000000000000000000000060a05260605060605180608001601f826000031636823750506308c379a06020526020604052601f19601f6060510116604401603cfd5b005b505b60006000fd5b600080fda165767970657283000307000b005b600080fd",
+  "deployedBytecode": "0x6003361161000c5761023b565b60003560e01c63ed88c68e81186100cf576004361061024157346100ab5760266040527f446f6e6174696f6e20616d6f756e74206d7573742062652067726561746572206060527f7468616e2030000000000000000000000000000000000000000000000000000060805260405060405180606001601f826000031636823750506308c379a06000526020602052601f19601f6040510116604401601cfd5b60013360205260005260406000208054348082018281106102415790509050815550005b3461024157633ccfd60b81186102395760043610610241576000543318156101965760426040527f4f6e6c79207468652064657369676e617465642063686172697461626c65206f6060527f7267616e697a6174696f6e2063616e20776974686472617720646f6e6174696f6080527f6e7300000000000000000000000000000000000000000000000000000000000060a05260405060405180606001601f826000031636823750506308c379a06000526020602052601f19601f6040510116604401601cfd5b4760405260006000600060006040516000546000f11561024157471561023757602b6060527f436f6e74726163742062616c616e6365206d75737420626520302061667465726080527f207769746864726177616c00000000000000000000000000000000000000000060a05260605060605180608001601f826000031636823750506308c379a06020526020604052601f19601f6060510116604401603cfd5b005b505b60006000fd5b600080fda165767970657283000307000b",
+  "deployedSourceMap": "-1:-1:0:-;;;;:::-;;:::-;:::-;;;;;;;;;:::-;;;;;:::-;477:9;470:62;:::-;-1:-1;;492:40;-1:-1;;492:40;-1:-1;;492:40;;470:62;-1:-1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;470:62::-;538:14;553:10;538:26;;;;;;;-1:-1;;568:9;-1:-1;;;;;;;:::-;;;538:39;;-1:-1;;538:39;-1:-1;:::-;;;:::-;;;;;:::-;;;;;:::-;714:25;700:39;:10;:39;;693:116;:::-;-1:-1;;741:68;-1:-1;;741:68;-1:-1;;741:68;-1:-1;;741:68;;693:116;-1:-1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;693:116::-;899:12;-1:-1;881:30;-1:-1;;;;1048:6;-1:-1;1021:25;-1:-1;;;1016:39;;:::-;1117:12;:17;-1:-1;1110:71::-;-1:-1;;1136:45;-1:-1;;1136:45;-1:-1;;1136:45;;1110:71;-1:-1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::-;;:::-;;:::-;;;;:::-;;;",
+  "source": "# @version ^0.3.7 \r\n\r\n# Charity Fundraiser Smart Contract\r\ncharity_organization: address # Address of the designated charitable organization\r\ndonations: HashMap[address, uint256] # Record of donations received by donor address\r\n\r\n@external\r\ndef __init__(charity_organization_address: address):\r\n    self.charity_organization = charity_organization_address\r\n\r\n# Allows donors to make a donation to the Charity Fundraiser contract\r\n@external\r\n@payable\r\ndef donate():\r\n    assert msg.value > 0, \"Donation amount must be greater than 0\"\r\n    self.donations[msg.sender] += msg.value\r\n\r\n# Allows the designated charitable organization to withdraw donations received\r\n@external\r\ndef withdraw():\r\n    assert msg.sender == self.charity_organization, \"Only the designated charitable organization can withdraw donations\"\r\n    # Define amount has the total amount of the contract balance\r\n    amount: uint256 = self.balance\r\n    # Transfer the total amount of the contract balance to the designated charitable organization\r\n    send(self.charity_organization, amount)\r\n    # Assert that the contract balance is now 0\r\n    assert self.balance == 0, \"Contract balance must be 0 after withdrawal\"\r\n\r\n",
+  "sourcePath": "/mnt/c/Users/Nathan/Documents/Vyper/smartcontract_seminare/truffle/contracts/charityFundraiser.vy",
+  "ast": {
+    "ast_type": "Module",
+    "body": [
+      {
+        "annotation": {
+          "ast_type": "Name",
+          "col_offset": 22,
+          "end_col_offset": 29,
+          "end_lineno": 4,
+          "id": "address",
+          "lineno": 4,
+          "node_id": 4,
+          "src": "81:7:0"
+        },
+        "ast_type": "VariableDecl",
+        "col_offset": 0,
+        "end_col_offset": 29,
+        "end_lineno": 4,
+        "is_constant": false,
+        "is_immutable": false,
+        "is_public": false,
+        "lineno": 4,
+        "node_id": 1,
+        "src": "59:29:0",
+        "target": {
+          "ast_type": "Name",
+          "col_offset": 0,
+          "end_col_offset": 20,
+          "end_lineno": 4,
+          "id": "charity_organization",
+          "lineno": 4,
+          "node_id": 2,
+          "src": "59:20:0"
+        },
+        "value": null
+      },
+      {
+        "annotation": {
+          "ast_type": "Subscript",
+          "col_offset": 11,
+          "end_col_offset": 36,
+          "end_lineno": 5,
+          "lineno": 5,
+          "node_id": 9,
+          "slice": {
+            "ast_type": "Index",
+            "col_offset": 19,
+            "end_col_offset": 35,
+            "end_lineno": 5,
+            "lineno": 5,
+            "node_id": 12,
+            "src": "161:16:0",
+            "value": {
+              "ast_type": "Tuple",
+              "col_offset": 19,
+              "elements": [
+                {
+                  "ast_type": "Name",
+                  "col_offset": 19,
+                  "end_col_offset": 26,
+                  "end_lineno": 5,
+                  "id": "address",
+                  "lineno": 5,
+                  "node_id": 14,
+                  "src": "161:7:0"
+                },
+                {
+                  "ast_type": "Name",
+                  "col_offset": 28,
+                  "end_col_offset": 35,
+                  "end_lineno": 5,
+                  "id": "uint256",
+                  "lineno": 5,
+                  "node_id": 16,
+                  "src": "170:7:0"
+                }
+              ],
+              "end_col_offset": 35,
+              "end_lineno": 5,
+              "lineno": 5,
+              "node_id": 13,
+              "src": "161:16:0"
+            }
+          },
+          "src": "153:25:0",
+          "value": {
+            "ast_type": "Name",
+            "col_offset": 11,
+            "end_col_offset": 18,
+            "end_lineno": 5,
+            "id": "HashMap",
+            "lineno": 5,
+            "node_id": 10,
+            "src": "153:7:0"
+          }
+        },
+        "ast_type": "VariableDecl",
+        "col_offset": 0,
+        "end_col_offset": 36,
+        "end_lineno": 5,
+        "is_constant": false,
+        "is_immutable": false,
+        "is_public": false,
+        "lineno": 5,
+        "node_id": 6,
+        "src": "142:36:0",
+        "target": {
+          "ast_type": "Name",
+          "col_offset": 0,
+          "end_col_offset": 9,
+          "end_lineno": 5,
+          "id": "donations",
+          "lineno": 5,
+          "node_id": 7,
+          "src": "142:9:0"
+        },
+        "value": null
+      },
+      {
+        "args": {
+          "args": [
+            {
+              "annotation": {
+                "ast_type": "Name",
+                "col_offset": 43,
+                "end_col_offset": 50,
+                "end_lineno": 8,
+                "id": "address",
+                "lineno": 8,
+                "node_id": 23,
+                "src": "284:7:0"
+              },
+              "arg": "charity_organization_address",
+              "ast_type": "arg",
+              "col_offset": 13,
+              "end_col_offset": 50,
+              "end_lineno": 8,
+              "lineno": 8,
+              "node_id": 22,
+              "src": "254:37:0"
+            }
+          ],
+          "ast_type": "arguments",
+          "col_offset": 13,
+          "default": null,
+          "defaults": [],
+          "end_col_offset": 50,
+          "end_lineno": 8,
+          "lineno": 8,
+          "node_id": 21,
+          "src": "254:37:0"
+        },
+        "ast_type": "FunctionDef",
+        "body": [
+          {
+            "ast_type": "Assign",
+            "col_offset": 4,
+            "end_col_offset": 60,
+            "end_lineno": 9,
+            "lineno": 9,
+            "node_id": 25,
+            "src": "299:56:0",
+            "target": {
+              "ast_type": "Attribute",
+              "attr": "charity_organization",
+              "col_offset": 4,
+              "end_col_offset": 29,
+              "end_lineno": 9,
+              "lineno": 9,
+              "node_id": 26,
+              "src": "299:25:0",
+              "value": {
+                "ast_type": "Name",
+                "col_offset": 4,
+                "end_col_offset": 8,
+                "end_lineno": 9,
+                "id": "self",
+                "lineno": 9,
+                "node_id": 27,
+                "src": "299:4:0"
+              }
+            },
+            "value": {
+              "ast_type": "Name",
+              "col_offset": 32,
+              "end_col_offset": 60,
+              "end_lineno": 9,
+              "id": "charity_organization_address",
+              "lineno": 9,
+              "node_id": 30,
+              "src": "327:28:0"
+            }
+          }
+        ],
+        "col_offset": 0,
+        "decorator_list": [
+          {
+            "ast_type": "Name",
+            "col_offset": 1,
+            "end_col_offset": 9,
+            "end_lineno": 7,
+            "id": "external",
+            "lineno": 7,
+            "node_id": 32,
+            "src": "231:8:0"
+          }
+        ],
+        "doc_string": null,
+        "end_col_offset": 60,
+        "end_lineno": 9,
+        "lineno": 8,
+        "name": "__init__",
+        "node_id": 20,
+        "pos": null,
+        "returns": null,
+        "src": "241:114:0"
+      },
+      {
+        "args": {
+          "args": [],
+          "ast_type": "arguments",
+          "col_offset": 0,
+          "default": null,
+          "defaults": [],
+          "end_col_offset": 3,
+          "end_lineno": 14,
+          "lineno": 14,
+          "node_id": 35,
+          "src": "451:3:0"
+        },
+        "ast_type": "FunctionDef",
+        "body": [
+          {
+            "ast_type": "Assert",
+            "col_offset": 4,
+            "end_col_offset": 66,
+            "end_lineno": 15,
+            "lineno": 15,
+            "msg": {
+              "ast_type": "Str",
+              "col_offset": 26,
+              "end_col_offset": 66,
+              "end_lineno": 15,
+              "lineno": 15,
+              "node_id": 44,
+              "src": "492:40:0",
+              "value": "Donation amount must be greater than 0"
+            },
+            "node_id": 36,
+            "src": "470:62:0",
+            "test": {
+              "ast_type": "Compare",
+              "col_offset": 11,
+              "end_col_offset": 24,
+              "end_lineno": 15,
+              "left": {
+                "ast_type": "Attribute",
+                "attr": "value",
+                "col_offset": 11,
+                "end_col_offset": 20,
+                "end_lineno": 15,
+                "lineno": 15,
+                "node_id": 38,
+                "src": "477:9:0",
+                "value": {
+                  "ast_type": "Name",
+                  "col_offset": 11,
+                  "end_col_offset": 14,
+                  "end_lineno": 15,
+                  "id": "msg",
+                  "lineno": 15,
+                  "node_id": 39,
+                  "src": "477:3:0"
+                }
+              },
+              "lineno": 15,
+              "node_id": 37,
+              "op": {
+                "ast_type": "Gt",
+                "col_offset": 11,
+                "end_col_offset": 24,
+                "end_lineno": 15,
+                "lineno": 15,
+                "node_id": 42,
+                "src": "477:13:0"
+              },
+              "right": {
+                "ast_type": "Int",
+                "col_offset": 23,
+                "end_col_offset": 24,
+                "end_lineno": 15,
+                "lineno": 15,
+                "node_id": 43,
+                "src": "489:1:0",
+                "value": 0
+              },
+              "src": "477:13:0"
+            }
+          },
+          {
+            "ast_type": "AugAssign",
+            "col_offset": 4,
+            "end_col_offset": 43,
+            "end_lineno": 16,
+            "lineno": 16,
+            "node_id": 45,
+            "op": {
+              "ast_type": "Add",
+              "col_offset": 4,
+              "end_col_offset": 43,
+              "end_lineno": 16,
+              "lineno": 16,
+              "node_id": 57,
+              "src": "538:39:0"
+            },
+            "src": "538:39:0",
+            "target": {
+              "ast_type": "Subscript",
+              "col_offset": 4,
+              "end_col_offset": 30,
+              "end_lineno": 16,
+              "lineno": 16,
+              "node_id": 46,
+              "slice": {
+                "ast_type": "Index",
+                "col_offset": 19,
+                "end_col_offset": 29,
+                "end_lineno": 16,
+                "lineno": 16,
+                "node_id": 51,
+                "src": "553:10:0",
+                "value": {
+                  "ast_type": "Attribute",
+                  "attr": "sender",
+                  "col_offset": 19,
+                  "end_col_offset": 29,
+                  "end_lineno": 16,
+                  "lineno": 16,
+                  "node_id": 52,
+                  "src": "553:10:0",
+                  "value": {
+                    "ast_type": "Name",
+                    "col_offset": 19,
+                    "end_col_offset": 22,
+                    "end_lineno": 16,
+                    "id": "msg",
+                    "lineno": 16,
+                    "node_id": 53,
+                    "src": "553:3:0"
+                  }
+                }
+              },
+              "src": "538:26:0",
+              "value": {
+                "ast_type": "Attribute",
+                "attr": "donations",
+                "col_offset": 4,
+                "end_col_offset": 18,
+                "end_lineno": 16,
+                "lineno": 16,
+                "node_id": 47,
+                "src": "538:14:0",
+                "value": {
+                  "ast_type": "Name",
+                  "col_offset": 4,
+                  "end_col_offset": 8,
+                  "end_lineno": 16,
+                  "id": "self",
+                  "lineno": 16,
+                  "node_id": 48,
+                  "src": "538:4:0"
+                }
+              }
+            },
+            "value": {
+              "ast_type": "Attribute",
+              "attr": "value",
+              "col_offset": 34,
+              "end_col_offset": 43,
+              "end_lineno": 16,
+              "lineno": 16,
+              "node_id": 58,
+              "src": "568:9:0",
+              "value": {
+                "ast_type": "Name",
+                "col_offset": 34,
+                "end_col_offset": 37,
+                "end_lineno": 16,
+                "id": "msg",
+                "lineno": 16,
+                "node_id": 59,
+                "src": "568:3:0"
+              }
+            }
+          }
+        ],
+        "col_offset": 0,
+        "decorator_list": [
+          {
+            "ast_type": "Name",
+            "col_offset": 1,
+            "end_col_offset": 9,
+            "end_lineno": 12,
+            "id": "external",
+            "lineno": 12,
+            "node_id": 62,
+            "src": "431:8:0"
+          },
+          {
+            "ast_type": "Name",
+            "col_offset": 1,
+            "end_col_offset": 8,
+            "end_lineno": 13,
+            "id": "payable",
+            "lineno": 13,
+            "node_id": 64,
+            "src": "442:7:0"
+          }
+        ],
+        "doc_string": null,
+        "end_col_offset": 43,
+        "end_lineno": 16,
+        "lineno": 14,
+        "name": "donate",
+        "node_id": 34,
+        "pos": null,
+        "returns": null,
+        "src": "451:126:0"
+      },
+      {
+        "args": {
+          "args": [],
+          "ast_type": "arguments",
+          "col_offset": 0,
+          "default": null,
+          "defaults": [],
+          "end_col_offset": 3,
+          "end_lineno": 20,
+          "lineno": 20,
+          "node_id": 67,
+          "src": "672:3:0"
+        },
+        "ast_type": "FunctionDef",
+        "body": [
+          {
+            "ast_type": "Assert",
+            "col_offset": 4,
+            "end_col_offset": 120,
+            "end_lineno": 21,
+            "lineno": 21,
+            "msg": {
+              "ast_type": "Str",
+              "col_offset": 52,
+              "end_col_offset": 120,
+              "end_lineno": 21,
+              "lineno": 21,
+              "node_id": 79,
+              "src": "741:68:0",
+              "value": "Only the designated charitable organization can withdraw donations"
+            },
+            "node_id": 68,
+            "src": "693:116:0",
+            "test": {
+              "ast_type": "Compare",
+              "col_offset": 11,
+              "end_col_offset": 50,
+              "end_lineno": 21,
+              "left": {
+                "ast_type": "Attribute",
+                "attr": "sender",
+                "col_offset": 11,
+                "end_col_offset": 21,
+                "end_lineno": 21,
+                "lineno": 21,
+                "node_id": 70,
+                "src": "700:10:0",
+                "value": {
+                  "ast_type": "Name",
+                  "col_offset": 11,
+                  "end_col_offset": 14,
+                  "end_lineno": 21,
+                  "id": "msg",
+                  "lineno": 21,
+                  "node_id": 71,
+                  "src": "700:3:0"
+                }
+              },
+              "lineno": 21,
+              "node_id": 69,
+              "op": {
+                "ast_type": "Eq",
+                "col_offset": 11,
+                "end_col_offset": 50,
+                "end_lineno": 21,
+                "lineno": 21,
+                "node_id": 105,
+                "src": "700:39:0"
+              },
+              "right": {
+                "ast_type": "Attribute",
+                "attr": "charity_organization",
+                "col_offset": 25,
+                "end_col_offset": 50,
+                "end_lineno": 21,
+                "lineno": 21,
+                "node_id": 75,
+                "src": "714:25:0",
+                "value": {
+                  "ast_type": "Name",
+                  "col_offset": 25,
+                  "end_col_offset": 29,
+                  "end_lineno": 21,
+                  "id": "self",
+                  "lineno": 21,
+                  "node_id": 76,
+                  "src": "714:4:0"
+                }
+              },
+              "src": "700:39:0"
+            }
+          },
+          {
+            "annotation": {
+              "ast_type": "Name",
+              "col_offset": 12,
+              "end_col_offset": 19,
+              "end_lineno": 23,
+              "id": "uint256",
+              "lineno": 23,
+              "node_id": 83,
+              "src": "889:7:0"
+            },
+            "ast_type": "AnnAssign",
+            "col_offset": 4,
+            "end_col_offset": 34,
+            "end_lineno": 23,
+            "lineno": 23,
+            "node_id": 80,
+            "simple": 1,
+            "src": "881:30:0",
+            "target": {
+              "ast_type": "Name",
+              "col_offset": 4,
+              "end_col_offset": 10,
+              "end_lineno": 23,
+              "id": "amount",
+              "lineno": 23,
+              "node_id": 81,
+              "src": "881:6:0"
+            },
+            "value": {
+              "ast_type": "Attribute",
+              "attr": "balance",
+              "col_offset": 22,
+              "end_col_offset": 34,
+              "end_lineno": 23,
+              "lineno": 23,
+              "node_id": 85,
+              "src": "899:12:0",
+              "value": {
+                "ast_type": "Name",
+                "col_offset": 22,
+                "end_col_offset": 26,
+                "end_lineno": 23,
+                "id": "self",
+                "lineno": 23,
+                "node_id": 86,
+                "src": "899:4:0"
+              }
+            }
+          },
+          {
+            "ast_type": "Expr",
+            "col_offset": 4,
+            "end_col_offset": 43,
+            "end_lineno": 25,
+            "lineno": 25,
+            "node_id": 89,
+            "src": "1016:39:0",
+            "value": {
+              "args": [
+                {
+                  "ast_type": "Attribute",
+                  "attr": "charity_organization",
+                  "col_offset": 9,
+                  "end_col_offset": 34,
+                  "end_lineno": 25,
+                  "lineno": 25,
+                  "node_id": 93,
+                  "src": "1021:25:0",
+                  "value": {
+                    "ast_type": "Name",
+                    "col_offset": 9,
+                    "end_col_offset": 13,
+                    "end_lineno": 25,
+                    "id": "self",
+                    "lineno": 25,
+                    "node_id": 94,
+                    "src": "1021:4:0"
+                  }
+                },
+                {
+                  "ast_type": "Name",
+                  "col_offset": 36,
+                  "end_col_offset": 42,
+                  "end_lineno": 25,
+                  "id": "amount",
+                  "lineno": 25,
+                  "node_id": 97,
+                  "src": "1048:6:0"
+                }
+              ],
+              "ast_type": "Call",
+              "col_offset": 4,
+              "end_col_offset": 43,
+              "end_lineno": 25,
+              "func": {
+                "ast_type": "Name",
+                "col_offset": 4,
+                "end_col_offset": 8,
+                "end_lineno": 25,
+                "id": "send",
+                "lineno": 25,
+                "node_id": 91,
+                "src": "1016:4:0"
+              },
+              "keyword": null,
+              "keywords": [],
+              "lineno": 25,
+              "node_id": 90,
+              "src": "1016:39:0"
+            }
+          },
+          {
+            "ast_type": "Assert",
+            "col_offset": 4,
+            "end_col_offset": 75,
+            "end_lineno": 27,
+            "lineno": 27,
+            "msg": {
+              "ast_type": "Str",
+              "col_offset": 30,
+              "end_col_offset": 75,
+              "end_lineno": 27,
+              "lineno": 27,
+              "node_id": 107,
+              "src": "1136:45:0",
+              "value": "Contract balance must be 0 after withdrawal"
+            },
+            "node_id": 99,
+            "src": "1110:71:0",
+            "test": {
+              "ast_type": "Compare",
+              "col_offset": 11,
+              "end_col_offset": 28,
+              "end_lineno": 27,
+              "left": {
+                "ast_type": "Attribute",
+                "attr": "balance",
+                "col_offset": 11,
+                "end_col_offset": 23,
+                "end_lineno": 27,
+                "lineno": 27,
+                "node_id": 101,
+                "src": "1117:12:0",
+                "value": {
+                  "ast_type": "Name",
+                  "col_offset": 11,
+                  "end_col_offset": 15,
+                  "end_lineno": 27,
+                  "id": "self",
+                  "lineno": 27,
+                  "node_id": 102,
+                  "src": "1117:4:0"
+                }
+              },
+              "lineno": 27,
+              "node_id": 100,
+              "op": {
+                "ast_type": "Eq",
+                "col_offset": 11,
+                "end_col_offset": 28,
+                "end_lineno": 27,
+                "lineno": 27,
+                "node_id": 105,
+                "src": "1117:17:0"
+              },
+              "right": {
+                "ast_type": "Int",
+                "col_offset": 27,
+                "end_col_offset": 28,
+                "end_lineno": 27,
+                "lineno": 27,
+                "node_id": 106,
+                "src": "1133:1:0",
+                "value": 0
+              },
+              "src": "1117:17:0"
+            }
+          }
+        ],
+        "col_offset": 0,
+        "decorator_list": [
+          {
+            "ast_type": "Name",
+            "col_offset": 1,
+            "end_col_offset": 9,
+            "end_lineno": 19,
+            "id": "external",
+            "lineno": 19,
+            "node_id": 108,
+            "src": "662:8:0"
+          }
+        ],
+        "doc_string": null,
+        "end_col_offset": 75,
+        "end_lineno": 27,
+        "lineno": 20,
+        "name": "withdraw",
+        "node_id": 66,
+        "pos": null,
+        "returns": null,
+        "src": "672:509:0"
+      }
+    ],
+    "col_offset": 0,
+    "doc_string": null,
+    "end_col_offset": 75,
+    "end_lineno": 27,
+    "lineno": 1,
+    "name": "/charityFundraiser.vy",
+    "node_id": 0,
+    "src": "0:1181:0"
+  },
+  "compiler": {
+    "name": "vyper",
+    "version": "0.3.7+commit.6020b8b"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xbeD41C80A9e137E6603215D40Ee709E3d90f454C",
+      "transactionHash": "0x9a76ac7d936d58e2dadc7d73c8f2baa5149929ef83623bed2ef8725dad21f67d"
+    }
+  },
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-05-04T22:02:34.081Z",
+  "networkType": "ethereum",
+  "devdoc": {},
+  "userdoc": {}
+}

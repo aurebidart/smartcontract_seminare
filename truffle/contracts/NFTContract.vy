@@ -30,21 +30,26 @@ def __init__():
 
 # Create and distribute NFTs to donors based on their donation amounts
 @external
-def createNFT(owner: address, donor: address, donationAmount: uint256, descritpion: String[50]):
+def createNFT(owner: address, donor: address, donationAmount: uint256, descritpion: String[50]) -> uint256:
     assert owner == self.owner, "Only the contract owner can create NFTs"
     assert donationAmount > 0, "Donation amount must be greater than 0"
 
-    self.donations[self.tokenID] = DonationInfo({
+    # save the current tokenID in a variable
+    nftToken: uint256 = self.tokenID
+
+    self.donations[nftToken] = DonationInfo({
         donor: donor,
         amount: donationAmount,
         descritpion: descritpion
     })
 
-    log NFTCreated(self.tokenID, donor, donationAmount, descritpion)
+    log NFTCreated(nftToken, donor, donationAmount, descritpion)
 
     self.totalSupply += 1
 
     self.tokenID += 1
+
+    return nftToken
 
 # Get the metadata of a specific NFT
 @external

@@ -1,37 +1,53 @@
-# Smart Contracts para recaudación de fondos de caridad
-Este proyecto contiene dos contratos inteligentes escritos en Vyper que interactúan entre sí para permitir la recaudación de fondos de caridad y la verificación de donaciones.
+# Charity Fundraiser Project
 
-## Contrato inteligente de recaudación de fondos de caridad
-El contrato inteligente de recaudación de fondos de caridad es responsable de recibir donaciones de los donantes y enviarlas a la organización benéfica designada.
+The Charity Fundraiser project is a decentralized application (DApp) built on the Ethereum blockchain that allows users to donate funds to a specific charity and receive non-fungible tokens (NFTs) representing their donations. The project consists of two smart contracts: the CharityFundraiser contract and the DonationNFT contract.
 
-### Funciones del contrato
-* donate(): Permite a los donantes hacer una donación al contrato de recaudación de fondos de caridad.
+## CharityFundraiser Contract
 
-* withdraw(): Permite a la organización benéfica retirar las donaciones recibidas del contrato de recaudación de fondos de caridad.
+The CharityFundraiser contract is responsible for accepting donations from users and managing the distribution of funds to the designated charitable organization. It keeps track of the total amount donated by each donor and allows the designated organization to withdraw the funds.
 
-### Variables públicas del contrato
+### Features
 
-* charity_organization: Dirección de la organización benéfica designada para recibir las donaciones.
+- Donors can make donations by sending ether to the contract.
+- Donations are recorded in a mapping, associating each donor's address with the amount donated.
+- The contract owner can set the designated charitable organization.
+- The designated organization can withdraw the donations received.
 
-* donations: Registro de donaciones recibidas por dirección de donante.
+### Integration with DonationNFT Contract
 
-## Contrato inteligente de verificación de donaciones
-El contrato inteligente de verificación de donaciones permite a los donantes verificar si sus donaciones se enviaron correctamente a la organización benéfica.
+The CharityFundraiser contract integrates with the DonationNFT contract to provide donors with NFTs representing their donations.
 
-### Funciones del contrato:
-* verify_donation(): Permite a los donantes verificar si sus donaciones se enviaron correctamente a la organización benéfica.
+- After a donation is made, an NFT is created in the DonationNFT contract.
+- The NFT represents the donor's donation and includes metadata such as the donor's address and the donation amount.
+- The NFT is assigned to the donor, providing a tokenized representation of their contribution.
 
-### Variables públicas del contrato:
+## DonationNFT Contract
 
-* charity_fundraiser: Dirección del contrato de recaudación de fondos de caridad.
+The DonationNFT contract is responsible for creating and managing the NFTs that represent the donations made through the CharityFundraiser contract.
 
-## Cómo usar los contratos
-Deploy del contrato de recaudación de fondos de caridad en la red deseada, especificando la dirección de la organización benéfica designada.
+### Features
 
-Deploy del contrato de verificación de donaciones en la misma red, especificando la dirección del contrato de recaudación de fondos de caridad.
+- Creates NFTs to represent the donations made.
+- Assigns the created NFTs to the respective donors.
+- Stores metadata associated with each NFT, such as the donor's address and the donation amount.
 
-Los donantes pueden interactuar con el contrato de recaudación de fondos de caridad llamando a la función donate() y especificando la cantidad de su donación.
+## Getting Started
 
-La organización benéfica puede retirar las donaciones recibidas llamando a la función withdraw() en el contrato de recaudación de fondos de caridad.
+To deploy and interact with the Charity Fundraiser project, follow these steps:
 
-Los donantes pueden verificar si sus donaciones se enviaron correctamente llamando a la función verify_donation() en el contrato de verificación de donaciones.
+1. Deploy the CharityFundraiser contract to the Ethereum blockchain, providing the address of the designated charitable organization and the address of the DonationNFT contract.
+
+2. Deploy the DonationNFT contract to the Ethereum blockchain.
+
+3. Interact with the CharityFundraiser contract through a web interface or directly using Ethereum wallets.
+
+### Dependencies
+
+- Ethereum blockchain
+- Ethereum wallet (e.g., MetaMask)
+- Vyper compiler
+
+## Resources
+
+- [Ethereum](https://ethereum.org/)
+- [Vyper Documentation](https://vyperlang.readthedocs.io/)

@@ -10,13 +10,13 @@ struct DonationInfo:
 
 owner: public(address)
 tokenID: uint256
-donations: public(HashMap[uint256, DonationInfo])
+donations: HashMap[uint256, DonationInfo]
 
 event NFTCreated:
     tokenID: uint256
     donor: address
     amount: uint256
-    descritpion: String[50]
+    descritpion: String[50] 
 
 
 
@@ -28,6 +28,7 @@ def __init__():
 
 # Create and distribute NFTs to donors based on their donation amounts
 @external
+@payable
 def createNFT(owner: address, donor: address, donationAmount: uint256, descritpion: String[50]) -> uint256:
     assert owner == self.owner, "Only the contract owner can create NFTs"
     assert donationAmount > 0, "Donation amount must be greater than 0"
@@ -56,8 +57,8 @@ def getNFTMetadata(tokenID: uint256) -> String[50]:
 # Get the donation amount of a specific NFT
 @external
 @view
-def getNFTDonationAmount(tokenID: uint256) -> uint256:
-    return self.donations[tokenID].amount
+def getNFTDonationAmount(tokenID: uint256) -> String[100]:
+    return uint2str(self.donations[tokenID].amount)
 
 # Get the donor of a specific NFT
 @external

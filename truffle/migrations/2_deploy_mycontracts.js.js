@@ -1,6 +1,6 @@
 // 2_deploy_mycontracts.js
 
-const charityFundraiser = artifacts.require("charityFundraiser");
+const charityFundraiser = artifacts.require("CharityFundraiser");
 const donationVerification = artifacts.require("NFTContract");
 
 module.exports = function(deployer) {

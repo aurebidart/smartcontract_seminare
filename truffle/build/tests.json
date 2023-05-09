@@ -1,0 +1,8 @@
+{
+  "contracts": {
+    "NFTContract": "41277ec45a3c8ea858ae076e3d49c2f5f0d2badd",
+    "charityFundraiser": "07d142975eaec0a6b4c6e331b044baa00df43319"
+  },
+  "tests": {},
+  "tx": {}
+}

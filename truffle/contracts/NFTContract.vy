@@ -9,7 +9,6 @@ struct DonationInfo:
     descritpion: String[50]
 
 owner: public(address)
-totalSupply: uint256
 tokenID: uint256
 donations: public(HashMap[uint256, DonationInfo])
 
@@ -25,7 +24,6 @@ event NFTCreated:
 @external
 def __init__():
     self.owner = msg.sender
-    self.totalSupply = 0
     self.tokenID = 1
 
 # Create and distribute NFTs to donors based on their donation amounts
@@ -44,8 +42,6 @@ def createNFT(owner: address, donor: address, donationAmount: uint256, descritpi
     })
 
     log NFTCreated(nftToken, donor, donationAmount, descritpion)
-
-    self.totalSupply += 1
 
     self.tokenID += 1
 

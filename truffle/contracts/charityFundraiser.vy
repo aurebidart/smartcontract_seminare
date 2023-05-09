@@ -6,9 +6,6 @@ struct DonationInfo:
     amount: uint256
     descritpion: String[50]
 
-event NFTCreated:
-    tokenID: uint256
-
 # External Interfaces
 interface Nftcontract:
     def createNFT(owner: address, donor: address, donationAmount: uint256, descritpion: String[50]) -> uint256: nonpayable
@@ -49,9 +46,7 @@ def donate():
     assert msg.value > 0, "Donation amount must be greater than 0"
     self.donations[msg.sender] += msg.value
     # Create an NFT for the donor
-    tokenID: uint256  = Nftcontract(self.nft_contract).createNFT(self.owner, msg.sender, msg.value, "Donation")
-    # Emit an event to notify the donor that an NFT has been created for them
-    log NFTCreated(tokenID)
+    Nftcontract(self.nft_contract).createNFT(self.owner, msg.sender, msg.value, "Donation")
 
 # Allows the designated charitable organization to withdraw donations received
 @external
@@ -67,6 +62,6 @@ def withdraw():
 
 @external
 @view
-def get_donation_amount(donor: address) -> uint256:
-    return self.donations[donor]
+def get_donation_amount(donor: address) -> String[100]:
+    return uint2str(self.donations[donor])
 

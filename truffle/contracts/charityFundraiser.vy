@@ -27,15 +27,15 @@ def __init__():
 
 # Allows the owner to set the designated charitable organization
 @external
-def set_charity_organization(charity_organization: address):
+def set_charity_organization(charity_organization_: address):
     assert msg.sender == self.owner, "Only the owner can set the designated charitable organization"
-    self.charity_organization = charity_organization
+    self.charity_organization = charity_organization_
 
 # Allows the owner to set the NFT contract address
 @external
-def set_nft_contract(nft_contract: address):
+def set_nft_contract(nft_contract_: address):
     assert msg.sender == self.owner, "Only the owner can set the NFT contract address"
-    self.nft_contract = nft_contract
+    self.nft_contract = nft_contract_
 
 
 # Allows donors to make a donation to the Charity Fundraiser contract
@@ -43,6 +43,7 @@ def set_nft_contract(nft_contract: address):
 @payable
 def donate():
     assert self.charity_organization != empty(address), "The designated charitable organization must be set before donations can be received"
+    assert self.nft_contract != empty(address), "The NFT contract address must be set before donations can be received"
     assert msg.value > 0, "Donation amount must be greater than 0"
     self.donations[msg.sender] += msg.value
     # Create an NFT for the donor
